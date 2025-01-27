@@ -1,3 +1,11 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+# poetry
+# ------
+
 [tool.poetry]
 name = "feedparser"
 version = "6.0.11"
@@ -12,26 +20,70 @@ license = "BSD-2-Clause"
 
 keywords = ["atom", "feed", "json", "rdf", "rss"]
 classifiers = [
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers",
-        "Topic :: Text Processing :: Markup",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Text Processing :: Markup",
 ]
 include = ["feedparser/py.typed"]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.9"
 sgmllib3k = "^1.0.0"
 requests = ">=2.20.0"
 
 
-[tool.poetry.group.dev.dependencies]
-scriv = {extras = ["toml"], version = "^1.2.1"}
+# coverage
+# --------
+
+[tool.coverage.run]
+parallel = true
+branch = true
+source = [
+    "feedparser",
+    "tests",
+]
+
+[tool.coverage.paths]
+source = [
+    "src",
+    "*/site-packages",
+]
+
+[tool.coverage.report]
+skip_covered = true
+fail_under = 93
+
+[tool.coverage.html]
+directory = "htmlcov/"
 
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+# isort
+# -----
 
+[tool.isort]
+profile = "black"
+
+
+# mypy
+# ----
+
+[tool.mypy]
+packages = "feedparser"
+show_error_codes = true
+sqlite_cache = true
+
+
+# pytest
+# ------
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+]
+
+
+# scriv
+# -----
 
 [tool.scriv]
 version = "literal: pyproject.toml: tool.poetry.version"
@@ -52,56 +104,3 @@ fragment_directory = "changelog.d"
 insert_marker = "scriv-insert-here"
 main_branches = ["develop", "master"]
 new_fragment_template = "file: fragment-template.rst.txt"
-
-
-[tool.isort]
-profile = "black"
-
-
-[tool.mypy]
-packages = "feedparser"
-show_error_codes = true
-sqlite_cache = true
-
-
-[tool.coverage.run]
-parallel = true
-branch = true
-source = [
-    "feedparser",
-    "tests",
-]
-
-
-[tool.coverage.paths]
-source = [
-    "src",
-    "*/site-packages",
-]
-
-
-[tool.coverage.report]
-skip_covered = true
-fail_under = 93
-
-
-[tool.coverage.html]
-directory = "htmlcov/"
-
-
-[tool.pytest.ini_options]
-filterwarnings = [
-    "error",
-
-    # PyPy on Linux triggers an ImportWarning from within pyyaml,
-    # which is used by the `responses` package in the test suite:
-    #
-    #   yaml/_yaml.pyx:2: in init yaml._yaml
-    #   can't resolve package from __spec__ or __package__,
-    #   falling back on __name__ and __path__
-    #
-    # https://github.com/yaml/pyyaml/issues/534
-    # https://github.com/cython/cython/issues/1720
-    #
-    "ignore::ImportWarning",
-]

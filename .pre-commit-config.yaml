@@ -1,6 +1,9 @@
 ci:
   autoupdate_schedule: "monthly"
 
+default_language_version:
+  python: "python3.13"
+
 repos:
   - repo: "meta"
     hooks:
@@ -8,7 +11,7 @@ repos:
       - id: "check-useless-excludes"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
-    rev: "v4.6.0"
+    rev: "v5.0.0"
     hooks:
       - id: "check-added-large-files"
       - id: "check-merge-conflict"
@@ -23,34 +26,48 @@ repos:
         exclude: "\\.xml"
 
   - repo: "https://github.com/asottile/pyupgrade"
-    rev: "v3.15.2"
+    rev: "v3.19.1"
     hooks:
       - id: "pyupgrade"
-        name: "Enforce Python 3.8+ idioms"
+        name: "Enforce Python 3.9+ idioms"
         args:
-          - "--py38-plus"
+          - "--py39-plus"
 
   - repo: "https://github.com/psf/black-pre-commit-mirror"
-    rev: "24.4.2"
+    rev: "24.10.0"
     hooks:
       - id: "black"
-        language_version: "python3.8"
 
   - repo: "https://github.com/pycqa/isort"
-    rev: "5.13.2"
+    rev: "6.0.0"
     hooks:
       - id: "isort"
 
   - repo: "https://github.com/pycqa/flake8"
-    rev: "7.0.0"
+    rev: "7.1.1"
     hooks:
       - id: "flake8"
         additional_dependencies:
-          - "flake8-bugbear==23.12.2"
+          - "flake8-bugbear==24.12.12"
+
+  - repo: "https://github.com/editorconfig-checker/editorconfig-checker"
+    rev: "v3.2.0"
+    hooks:
+      - id: "editorconfig-checker"
 
   - repo: "https://github.com/python-jsonschema/check-jsonschema"
-    rev: "0.28.4"
+    rev: "0.31.0"
     hooks:
       - id: "check-dependabot"
       - id: "check-github-workflows"
       - id: "check-readthedocs"
+
+  - repo: "https://github.com/rhysd/actionlint"
+    rev: "v1.7.7"
+    hooks:
+      - id: "actionlint"
+
+  - repo: "https://github.com/kurtmckee/pre-commit-hooks"
+    rev: "v1.0.0"
+    hooks:
+      - id: "verify-consistent-pyproject-toml-python-requirements"
